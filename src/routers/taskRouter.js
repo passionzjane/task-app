@@ -2,6 +2,7 @@ const express = require('express')
 const router = new express.Router()
 const Task = require('../models/taskModel')
 const auth = require('../middlewares/authMiddleware')
+const User = require('../models/userModel')
 
 
 router.post('/tasks', auth, async(req, res) => {
@@ -20,18 +21,32 @@ router.post('/tasks', auth, async(req, res) => {
 
 
 // GET /task?completed=true
-router.get('/tasks', auth, async(req,res) => {
+// GET /tasks?limit=10&skip=20
+router.get('/tasks', auth, async(req, res) => {
     const match = {}
 
     if (req.query.completed) {
         match.completed = req.query.completed === 'true'
     }
+
     
     try {
+
+        let limit = 2
+
+        if(req.query.limit) {
+            limit = parseInt(req.query.limit)
+        }
+     
         await req.user.populate({
             path: 'tasks',
-            match
+            match,
+            options: {
+                limit,
+                skip: parseInt(req.query.skip)
+            }
         })
+
         res.send(req.user.tasks)
     } catch (e) {
         console.log(e)
