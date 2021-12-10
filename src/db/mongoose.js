@@ -5,9 +5,9 @@ const mongoose = require('mongoose')
 const databaseConnect = async() => {
     try {
     connect = await mongoose.connect(process.env.MONGODB_URL, {})
-    console.log(`DB connected @${connect.connection.host}`)
+    // console.log(`DB connected @${connect.connection.host}`)
     } catch (e) {
-    console.log(e.message)
+    // console.log(e.message)
 }
 }
 

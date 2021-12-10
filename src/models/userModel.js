@@ -91,10 +91,10 @@ userSchema.methods.generateAuthToken = async function () {
 
 // compare hashed password to user login password
 userSchema.statics.findByCredentials = async (email, password) => {
-    const user = await User.findOne({email})
+    const user = await User.findOne({ email })
 
     if (!user) {
-        throw new Error('unable to login')
+        throw new Error('Unable to login')
     }
 
     const isMatch = await bcrypt.compare(password, user.password)
